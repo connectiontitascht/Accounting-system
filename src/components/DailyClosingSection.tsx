@@ -1932,80 +1932,76 @@ export function DailyClosingSection({ userId, transactions, currentUserProfile }
       )}
 
       {/* Main calculation workspace */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
         {/* Left Side 2-Columns: Daily Income Statement Entry Card */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2 space-y-8">
           {/* Daily Income Statement Entry Card */}
-          <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-5">
-              <div className="flex items-center gap-2.5">
-                <span className="p-2 bg-emerald-50 text-emerald-600 rounded-xl">
-                  <PlusCircle className="w-5 h-5" />
+          <div className="bg-white border-2 border-[#1a1a1e] p-8 shadow-[6px_6px_0_rgba(26,26,30,0.08)]">
+            <div className="flex items-center justify-between border-b border-[#1a1a1e] pb-6 mb-8">
+              <div className="flex items-center gap-4">
+                <span className="p-3 bg-[#1a1a1e] text-white">
+                  <PlusCircle className="w-6 h-6" />
                 </span>
                 <div>
-                  <h3 className="text-sm font-extrabold text-slate-800">Daily Income Statement Entry ({selectedDate})</h3>
-                  <p className="text-[11px] text-slate-400 mt-0.5">Daily collections records table by category and payment method</p>
+                  <h3 className="font-syne text-xl font-bold uppercase tracking-tighter">Daily Income Entry</h3>
+                  <p className="font-mono text-[10px] uppercase text-[#1a1a1e]/60">Record Date: {selectedDate}</p>
                 </div>
               </div>
               {isDateAlreadyClosed && (
-                <span className="flex items-center gap-1 text-[10px] bg-rose-50 text-rose-600 px-2.5 py-1 rounded-full font-bold border border-rose-100">
-                  <Lock className="w-3 h-3" /> Locked
+                <span className="flex items-center gap-2 text-xs bg-red-100 text-red-600 px-4 py-2 font-bold border-2 border-red-600">
+                  <Lock className="w-4 h-4" /> Locked
                 </span>
               )}
             </div>
 
             {/* Income Statement Entry Form */}
             {!isDateAlreadyClosed && (
-              <form onSubmit={handleAddEntryStatement} className="bg-slate-50 border border-slate-200/50 rounded-2xl p-4 mb-6 space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 items-end">
-                  <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Category</label>
-                    <select
-                      value={entryCategory}
-                      onChange={(e) => setEntryCategory(e.target.value)}
-                      className="w-full text-xs px-3 py-2 bg-white border border-slate-200 rounded-xl text-slate-700 focus:ring-1 focus:ring-indigo-500 focus:outline-none font-bold cursor-pointer"
-                    >
-                      <option value="customer_bill">Customer Bill</option>
-                      <option value="reseller_bill">Reseller Bill</option>
-                      <option value="service_charge">Service Charge</option>
-                      <option value="other_income">Other</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Payment Method</label>
-                    <select
-                      value={entryPaymentMethod}
-                      onChange={(e) => setEntryPaymentMethod(e.target.value)}
-                      className="w-full text-xs px-3 py-2 bg-white border border-slate-200 rounded-xl text-slate-700 focus:ring-1 focus:ring-indigo-500 focus:outline-none font-bold capitalize cursor-pointer"
-                    >
-                      <option value="cash">Cash</option>
-                      <option value="bkash">bKash</option>
-                      <option value="nagad">Nagad</option>
-                      <option value="rocket">Rocket</option>
-                      <option value="bank">Bank Transfer</option>
-                      <option value="sslcommerz">SSL Commerz</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Today Income (BDT)</label>
-                    <input
-                      type="number"
-                      placeholder="Amount"
-                      value={entryAmount}
-                      onChange={(e) => setEntryAmount(e.target.value)}
-                      className="w-full text-xs px-3 py-2 bg-white border border-slate-200 rounded-xl text-slate-700 focus:ring-1 focus:ring-indigo-500 focus:outline-none font-semibold font-mono"
-                    />
-                  </div>
-                  <div>
-                    <button
-                      type="submit"
-                      className="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition cursor-pointer"
-                    >
-                      <Plus className="w-4 h-4" /> Add Income
-                    </button>
-                  </div>
+              <form onSubmit={handleAddEntryStatement} className="grid grid-cols-1 sm:grid-cols-4 gap-6 items-end">
+                <div className="input-group">
+                  <label className="block font-mono text-[10px] uppercase text-[#1a1a1e]/60 mb-2">Category</label>
+                  <select
+                    value={entryCategory}
+                    onChange={(e) => setEntryCategory(e.target.value)}
+                    className="w-full text-sm p-3 border-2 border-[#1a1a1e] rounded-none font-mono cursor-pointer"
+                  >
+                    <option value="customer_bill">Customer Bill</option>
+                    <option value="reseller_bill">Reseller Bill</option>
+                    <option value="service_charge">Service Charge</option>
+                    <option value="other_income">Other</option>
+                  </select>
                 </div>
+                <div className="input-group">
+                  <label className="block font-mono text-[10px] uppercase text-[#1a1a1e]/60 mb-2">Method</label>
+                  <select
+                    value={entryPaymentMethod}
+                    onChange={(e) => setEntryPaymentMethod(e.target.value)}
+                    className="w-full text-sm p-3 border-2 border-[#1a1a1e] rounded-none font-mono cursor-pointer"
+                  >
+                    <option value="cash">Cash</option>
+                    <option value="bkash">bKash</option>
+                    <option value="nagad">Nagad</option>
+                    <option value="rocket">Rocket</option>
+                    <option value="bank">Bank</option>
+                    <option value="sslcommerz">SSL Commerz</option>
+                  </select>
+                </div>
+                <div className="input-group">
+                  <label className="block font-mono text-[10px] uppercase text-[#1a1a1e]/60 mb-2">Amount (BDT)</label>
+                  <input
+                    type="number"
+                    placeholder="0.00"
+                    value={entryAmount}
+                    onChange={(e) => setEntryAmount(e.target.value)}
+                    className="w-full text-sm p-3 border-2 border-[#1a1a1e] rounded-none font-mono"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="w-full p-3 bg-[#1a1a1e] text-white font-bold text-sm uppercase tracking-wider hover:bg-[#6366f1] transition cursor-pointer"
+                >
+                  + Add Income
+                </button>
               </form>
             )}
 
@@ -2013,7 +2009,7 @@ export function DailyClosingSection({ userId, transactions, currentUserProfile }
           </div>
 
           {/* Daily Expense Statement Entry Card */}
-          <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
+          <div className="bg-white border-2 border-[#1a1a1e] p-8 shadow-[6px_6px_0_rgba(26,26,30,0.08)]">
             <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-5">
               <div className="flex items-center gap-2.5">
                 <span className="p-2 bg-rose-50 text-rose-600 rounded-xl">

@@ -537,513 +537,58 @@ export default function App() {
   });
 
   return (
-    <div className="flex h-screen bg-[#F1F5F9] font-sans text-slate-900 overflow-hidden relative">
-      {/* Sidebar background graphics */}
-      <div className="absolute top-0 left-[240px] w-[500px] h-[500px] blur-glow-emerald rounded-full pointer-events-none -z-10"></div>
-      <div className="absolute top-[30%] right-[5%] w-[500px] h-[500px] blur-glow-rose rounded-full pointer-events-none -z-10"></div>
-
-      {/* left Sidebar for desktop/laptop with smooth slide and collapse transition */}
-      <aside 
-        className={`bg-[#0F172A] text-white flex-col justify-between select-none border-r border-slate-800/20 shrink-0 hidden md:flex sticky top-0 h-screen transition-all duration-300 ease-in-out ${
-          desktopSidebarOpen ? 'w-64 p-6' : 'w-0 p-0 overflow-hidden border-r-0'
-        }`}
-      >
-        <div className="flex flex-col h-full justify-between">
-          <div>
-            <div className="flex items-center gap-3 mb-10 whitespace-nowrap">
-              <div className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center font-bold text-xl text-white shadow-md shrink-0">
-                TA
-              </div>
-              <div className="transition-opacity duration-200">
-                <h1 className="text-lg font-bold tracking-tight">Titas Accounting</h1>
-                <p className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Income-Expense Tracker</p>
-              </div>
-            </div>
-
-            <nav className="space-y-1.5">
-              {(currentUserProfile?.menuAccess?.showDashboard ?? true) && (
-                <button
-                  onClick={() => setActiveSection('dashboard')}
-                  className={`w-full p-3 rounded-lg flex items-center gap-3 text-sm font-semibold transition-all cursor-pointer whitespace-nowrap ${
-                    activeSection === 'dashboard'
-                      ? 'bg-indigo-600 text-white shadow-sm'
-                      : 'text-slate-400 hover:bg-slate-800 hover:text-slate-100'
-                  }`}
-                >
-                  <LayoutDashboard className="w-4.5 h-4.5 text-indigo-400 shrink-0" />
-                  <span>Dashboard Summary</span>
-                </button>
-              )}
-
-              {(currentUserProfile?.menuAccess?.showHistory ?? true) && (
-                <button
-                  onClick={() => setActiveSection('history')}
-                  className={`w-full p-3 rounded-lg flex items-center gap-3 text-sm font-semibold transition-all cursor-pointer whitespace-nowrap ${
-                    activeSection === 'history'
-                      ? 'bg-indigo-600 text-white shadow-sm'
-                      : 'text-slate-400 hover:bg-slate-800 hover:text-slate-100'
-                  }`}
-                >
-                  <Receipt className="w-4.5 h-4.5 text-rose-400 shrink-0" />
-                  <span>Transaction List</span>
-                </button>
-              )}
-
-              {(currentUserProfile?.menuAccess?.showHomeUser ?? true) && (
-                <button
-                  onClick={() => setActiveSection('home_user')}
-                  className={`w-full p-3 rounded-lg flex items-center gap-3 text-sm font-semibold transition-all cursor-pointer whitespace-nowrap ${
-                    activeSection === 'home_user'
-                      ? 'bg-indigo-600 text-white shadow-sm'
-                      : 'text-slate-400 hover:bg-slate-800 hover:text-slate-100'
-                  }`}
-                >
-                  <Users className="w-4.5 h-4.5 text-yellow-400 shrink-0" />
-                  <span>Home User</span>
-                </button>
-              )}
-
-              {(currentUserProfile?.menuAccess?.showReseller ?? true) && (
-                <button
-                  onClick={() => setActiveSection('reseller')}
-                  className={`w-full p-3 rounded-lg flex items-center gap-3 text-sm font-semibold transition-all cursor-pointer whitespace-nowrap ${
-                    activeSection === 'reseller'
-                      ? 'bg-indigo-600 text-white shadow-sm'
-                      : 'text-slate-400 hover:bg-slate-800 hover:text-slate-100'
-                  }`}
-                >
-                  <Users className="w-4.5 h-4.5 text-cyan-400 shrink-0" />
-                  <span>Reseller</span>
-                </button>
-              )}
-
-              {(currentUserProfile?.menuAccess?.showVoucher ?? true) && (
-                <button
-                  onClick={() => setActiveSection('voucher')}
-                  className={`w-full p-3 rounded-lg flex items-center gap-3 text-sm font-semibold transition-all cursor-pointer whitespace-nowrap ${
-                    activeSection === 'voucher'
-                      ? 'bg-indigo-600 text-white shadow-sm'
-                      : 'text-slate-400 hover:bg-slate-800 hover:text-slate-100'
-                  }`}
-                >
-                  <FileText className="w-4.5 h-4.5 text-rose-400 shrink-0" />
-                  <span>Voucher</span>
-                </button>
-              )}
-
-              {(currentUserProfile?.menuAccess?.showDailyClosing ?? true) && (
-                <button
-                  onClick={() => setActiveSection('daily_closing')}
-                  className={`w-full p-3 rounded-lg flex items-center gap-3 text-sm font-semibold transition-all cursor-pointer whitespace-nowrap ${
-                    activeSection === 'daily_closing'
-                      ? 'bg-indigo-600 text-white shadow-sm'
-                      : 'text-slate-400 hover:bg-slate-800 hover:text-slate-100'
-                  }`}
-                >
-                  <Calculator className="w-4.5 h-4.5 text-emerald-400 shrink-0" />
-                  <span>Daily Closing</span>
-                </button>
-              )}
-
-              {/* System Dropdown (Admin Only) */}
-              {(!currentUserProfile || currentUserProfile.role === 'admin') && (
-                <div className="space-y-1 pt-1.5 border-t border-slate-800/40">
-                  <button
-                    onClick={() => setSystemMenuOpen(!systemMenuOpen)}
-                    className="w-full p-3 rounded-lg flex items-center justify-between text-sm font-semibold text-slate-400 hover:bg-slate-800 hover:text-slate-100 transition-all cursor-pointer"
-                  >
-                    <div className="flex items-center gap-3">
-                      <Settings className="w-4.5 h-4.5 text-indigo-400 shrink-0" />
-                      <span>System</span>
-                    </div>
-                    <ChevronDown className={`w-3.5 h-3.5 text-slate-500 transition-transform duration-200 ${systemMenuOpen ? 'rotate-180' : ''}`} />
-                  </button>
-                  
-                  {systemMenuOpen && (
-                    <div className="pl-6 space-y-1">
-                      <button
-                        onClick={() => setActiveSection('system_users')}
-                        className={`w-full p-2.5 rounded-lg flex items-center gap-2.5 text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
-                          activeSection === 'system_users'
-                            ? 'bg-indigo-600 text-white shadow-sm'
-                            : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-100'
-                        }`}
-                      >
-                        <Users className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
-                        <span>App User</span>
-                      </button>
-                    </div>
-                  )}
-                </div>
-              )}
-            </nav>
-          </div>
-
-          {/* Profiler user tag at bottom */}
-          <div className="mt-auto pt-4 border-t border-slate-800 flex flex-col gap-3 whitespace-nowrap">
-            <div className="flex flex-col gap-1">
-              <span className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">Logged In:</span>
-              <span className="text-xs text-slate-300 font-mono truncate">{user.email || ''}</span>
-            </div>
-            <button
-              onClick={safeSignOut}
-              className="w-full text-slate-400 hover:text-white hover:bg-slate-800 p-2.5 rounded-lg flex items-center justify-center gap-2 text-xs font-semibold transition cursor-pointer border border-slate-800 mt-2"
-            >
-              <LogOut className="w-3.5 h-3.5 text-rose-400 shrink-0" />
-              <span>Sign Out</span>
+    <div className="grid grid-cols-[80px,1fr] h-screen bg-bg text-ink font-geist overflow-hidden antialiased">
+      {/* Nav Sidebar */}
+      <nav className="sidebar h-screen bg-surface border-r border-border flex flex-col items-center py-6 gap-8">
+        <div className="logo-box bg-accent text-black flex items-center justify-center font-bold rounded-xl mb-2">TA</div>
+        <div className="flex flex-col gap-4">
+            <button onClick={() => setActiveSection('dashboard')} className={`nav-item ${activeSection === 'dashboard' ? 'active' : ''}`}>
+                <LayoutDashboard className="w-6 h-6" />
             </button>
-          </div>
+            <button onClick={() => setActiveSection('history')} className={`nav-item ${activeSection === 'history' ? 'active' : ''}`}>
+                <Receipt className="w-6 h-6" />
+            </button>
+            <button onClick={() => setActiveSection('home_user')} className={`nav-item ${activeSection === 'home_user' ? 'active' : ''}`}>
+                <Users className="w-6 h-6" />
+            </button>
+            <button onClick={() => setActiveSection('reseller')} className={`nav-item ${activeSection === 'reseller' ? 'active' : ''}`}>
+                <Users className="w-6 h-6" />
+            </button>
+            <button onClick={() => setActiveSection('daily_closing')} className={`nav-item ${activeSection === 'daily_closing' ? 'active' : ''}`}>
+                <Calculator className="w-6 h-6" />
+            </button>
         </div>
-      </aside>
-
-      {/* Main Container Right column */}
-      <main className="flex-1 flex flex-col h-screen overflow-y-auto overflow-x-hidden">
-        {/* Dynamic header row matching high density aesthetic */}
-        <header className="h-16 bg-white/95 backdrop-blur-sm border-b border-slate-200 px-6 flex items-center justify-between sticky top-0 z-30 select-none">
-          <div className="flex items-center gap-4">
-            {/* Hamburger/Slidebar toggle for desktop & mobile */}
-            <button 
-              onClick={() => {
-                if (window.innerWidth < 768) {
-                  setMobileMenuOpen(true);
-                } else {
-                  setDesktopSidebarOpen(!desktopSidebarOpen);
-                }
-              }}
-              className="p-1.5 hover:bg-slate-100 rounded-lg text-slate-600 cursor-pointer flex items-center justify-center transition-colors"
-              title="Toggle Sidebar"
-            >
-              <Menu className="w-5 h-5" />
+        <div className="mt-auto">
+            <button onClick={safeSignOut} className="nav-item text-ink-dim hover:text-rose-500 hover:bg-rose-500/5 transition">
+                <LogOut className="w-6 h-6" />
             </button>
+        </div>
+      </nav>
 
-            {/* Brand Logo & Name (visible on desktop/laptop when sidebar is collapsed) */}
-            {!desktopSidebarOpen && (
-              <div className="hidden md:flex items-center gap-2.5 mr-4 animate-fade-in">
-                <div className="w-9 h-9 bg-indigo-600 rounded-lg flex items-center justify-center font-bold text-base text-white shadow-md">
-                  TA
-                </div>
-                <div>
-                  <h1 className="text-sm font-bold text-slate-800 tracking-tight leading-tight">Titas Accounting</h1>
-                  <p className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider leading-none">Income-Expense Tracker</p>
-                </div>
-              </div>
-            )}
-
-            {/* Menu Options Dropdown for Laptop/Desktop View */}
-            <div className="hidden md:block relative">
-              <button
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="flex items-center gap-2.5 px-3.5 py-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 transition cursor-pointer select-none"
-              >
-                {activeSection === 'dashboard' && (
-                  <>
-                    <LayoutDashboard className="w-4 h-4 text-indigo-500 animate-pulse" />
-                    <span>Dashboard Summary</span>
-                  </>
-                )}
-                {activeSection === 'history' && (
-                  <>
-                    <Receipt className="w-4 h-4 text-rose-500" />
-                    <span>Transaction List</span>
-                  </>
-                )}
-                {activeSection === 'home_user' && (
-                  <>
-                    <Users className="w-4 h-4 text-yellow-500" />
-                    <span>Home User</span>
-                  </>
-                )}
-                {activeSection === 'reseller' && (
-                  <>
-                    <Users className="w-4 h-4 text-cyan-500" />
-                    <span>Reseller</span>
-                  </>
-                )}
-                {activeSection === 'voucher' && (
-                  <>
-                    <FileText className="w-4 h-4 text-rose-500" />
-                    <span>Voucher</span>
-                  </>
-                )}
-                {activeSection === 'daily_closing' && (
-                  <>
-                    <Calculator className="w-4 h-4 text-emerald-500" />
-                    <span>Daily Closing</span>
-                  </>
-                )}
-                {activeSection === 'system_users' && (
-                  <>
-                    <Settings className="w-4 h-4 text-indigo-500" />
-                    <span>App User Control</span>
-                  </>
-                )}
-                <ChevronDown className="w-3.5 h-3.5 text-slate-400 ml-1" />
-              </button>
-
-              {/* Dropdown Options list */}
-              {dropdownOpen && (
-                <>
-                  <div className="fixed inset-0 z-30" onClick={() => setDropdownOpen(false)}></div>
-                  <div className="absolute left-0 mt-2 w-56 bg-white border border-slate-200 rounded-2xl shadow-xl py-1.5 z-40 animate-fade-in animate-scale-up">
-                    {(currentUserProfile?.menuAccess?.showDashboard ?? true) && (
-                      <button
-                        onClick={() => { setActiveSection('dashboard'); setDropdownOpen(false); }}
-                        className={`w-full px-4 py-2.5 text-left text-xs font-bold flex items-center gap-3 hover:bg-slate-50 transition cursor-pointer ${
-                          activeSection === 'dashboard' ? 'text-indigo-600 bg-indigo-50/50' : 'text-slate-600'
-                        }`}
-                      >
-                        <LayoutDashboard className="w-4 h-4 text-indigo-500" />
-                        <span>Dashboard Summary</span>
-                      </button>
-                    )}
-                    {(currentUserProfile?.menuAccess?.showHistory ?? true) && (
-                      <button
-                        onClick={() => { setActiveSection('history'); setDropdownOpen(false); }}
-                        className={`w-full px-4 py-2.5 text-left text-xs font-bold flex items-center gap-3 hover:bg-slate-50 transition cursor-pointer ${
-                          activeSection === 'history' ? 'text-indigo-600 bg-indigo-50/50' : 'text-slate-600'
-                        }`}
-                      >
-                        <Receipt className="w-4 h-4 text-rose-500" />
-                        <span>Transaction List</span>
-                      </button>
-                    )}
-                    {(currentUserProfile?.menuAccess?.showHomeUser ?? true) && (
-                      <button
-                        onClick={() => { setActiveSection('home_user'); setDropdownOpen(false); }}
-                        className={`w-full px-4 py-2.5 text-left text-xs font-bold flex items-center gap-3 hover:bg-slate-50 transition cursor-pointer ${
-                          activeSection === 'home_user' ? 'text-indigo-600 bg-indigo-50/50' : 'text-slate-600'
-                        }`}
-                      >
-                        <Users className="w-4 h-4 text-yellow-500" />
-                        <span>Home User</span>
-                      </button>
-                    )}
-                    {(currentUserProfile?.menuAccess?.showReseller ?? true) && (
-                      <button
-                        onClick={() => { setActiveSection('reseller'); setDropdownOpen(false); }}
-                        className={`w-full px-4 py-2.5 text-left text-xs font-bold flex items-center gap-3 hover:bg-slate-50 transition cursor-pointer ${
-                          activeSection === 'reseller' ? 'text-indigo-600 bg-indigo-50/50' : 'text-slate-600'
-                        }`}
-                      >
-                        <Users className="w-4 h-4 text-cyan-500" />
-                        <span>Reseller</span>
-                      </button>
-                    )}
-                    {(currentUserProfile?.menuAccess?.showVoucher ?? true) && (
-                      <button
-                        onClick={() => { setActiveSection('voucher'); setDropdownOpen(false); }}
-                        className={`w-full px-4 py-2.5 text-left text-xs font-bold flex items-center gap-3 hover:bg-slate-50 transition cursor-pointer ${
-                          activeSection === 'voucher' ? 'text-indigo-600 bg-indigo-50/50' : 'text-slate-600'
-                        }`}
-                      >
-                        <FileText className="w-4 h-4 text-rose-500" />
-                        <span>Voucher</span>
-                      </button>
-                    )}
-                    {(currentUserProfile?.menuAccess?.showDailyClosing ?? true) && (
-                      <button
-                        onClick={() => { setActiveSection('daily_closing'); setDropdownOpen(false); }}
-                        className={`w-full px-4 py-2.5 text-left text-xs font-bold flex items-center gap-3 hover:bg-slate-50 transition cursor-pointer ${
-                          activeSection === 'daily_closing' ? 'text-indigo-600 bg-indigo-50/50' : 'text-slate-600'
-                        }`}
-                      >
-                        <Calculator className="w-4 h-4 text-emerald-500" />
-                        <span>Daily Closing</span>
-                      </button>
-                    )}
-                    {(!currentUserProfile || currentUserProfile.role === 'admin') && (
-                      <button
-                        onClick={() => { setActiveSection('system_users'); setDropdownOpen(false); }}
-                        className={`w-full px-4 py-2.5 text-left text-xs font-bold flex items-center gap-3 hover:bg-slate-50 transition cursor-pointer ${
-                          activeSection === 'system_users' ? 'text-indigo-600 bg-indigo-50/50' : 'text-slate-600'
-                        }`}
-                      >
-                        <Users className="w-4 h-4 text-indigo-500" />
-                        <span>App User</span>
-                      </button>
-                    )}
-                  </div>
-                </>
-              )}
-            </div>
-
-            {/* Mobile View Title */}
-            <h2 className="text-base font-bold text-slate-800 md:hidden">
-              {activeSection === 'dashboard' && 'Dashboard Summary'}
-              {activeSection === 'history' && 'Transaction List'}
-              {activeSection === 'home_user' && 'Home User'}
-              {activeSection === 'reseller' && 'Reseller'}
-              {activeSection === 'voucher' && 'Voucher'}
-              {activeSection === 'daily_closing' && 'Daily Closing'}
-              {activeSection === 'system_users' && 'App User Control'}
-            </h2>
-
-            <span className="text-xs bg-slate-100 text-slate-500 px-2 py-1 rounded font-semibold hidden lg:inline-block">
-              {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
-            </span>
+      {/* Main Workspace */}
+      <div className="grid grid-rows-[auto,1fr,auto] h-screen overflow-hidden">
+        {/* Dynamic header row matching high density aesthetic */}
+        <header className="border-b border-border flex items-center justify-between px-10 h-[72px] bg-bg/80 backdrop-blur-xl">
+          <div className="flex items-center gap-4">
+            <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="lg:hidden p-2 text-accent">
+              <Menu className="w-6 h-6" />
+            </button>
+            <h2 className="font-geist font-bold text-lg">
+            {activeSection === 'dashboard' && 'Dashboard'}
+            {activeSection === 'history' && 'Transactions'}
+            {activeSection === 'home_user' && 'Home User'}
+            {activeSection === 'reseller' && 'Reseller'}
+            {activeSection === 'daily_closing' && 'Daily Closing'}
+            {activeSection === 'system_users' && 'System Users'}
+          </h2>
           </div>
-
-          <div className="flex items-center gap-3">
-            <NotificationBell />
-            {/* Desktop User profile details & Sign Out */}
-            <div className="hidden md:flex items-center gap-3 pr-1">
-              <div className="flex flex-col text-right">
-                <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider leading-none">Logged In</span>
-                <span className="text-xs text-slate-600 font-mono font-medium max-w-[150px] truncate">{user.email || ''}</span>
-              </div>
-              <button
-                onClick={safeSignOut}
-                className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition cursor-pointer border border-slate-200 flex items-center justify-center"
-                title="Sign Out"
-              >
-                <LogOut className="w-3.5 h-3.5 text-rose-400" />
-              </button>
-            </div>
+          <div className="input-group">
+            <input type="date" defaultValue={new Date().toISOString().split('T')[0]} className="p-2 border border-border bg-surface font-mono text-sm rounded-lg" />
           </div>
         </header>
 
-        {/* Mobile Sidebar overlay */}
-        {mobileMenuOpen && (
-          <div 
-            className="md:hidden fixed inset-0 bg-slate-900/60 z-50 flex" 
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <div 
-              className="w-64 bg-[#0F172A] text-white p-6 flex flex-col justify-between h-full" 
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div>
-                <div className="flex items-center justify-between mb-8">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center font-bold text-white">TA</div>
-                    <span className="font-bold">Titas Accounting</span>
-                  </div>
-                  <button onClick={() => setMobileMenuOpen(false)} className="text-slate-400 hover:text-white">
-                    <X className="w-5 h-5" />
-                  </button>
-                </div>
-
-                <nav className="space-y-2">
-                  {(currentUserProfile?.menuAccess?.showDashboard ?? true) && (
-                    <button
-                      onClick={() => { setActiveSection('dashboard'); setMobileMenuOpen(false); }}
-                      className={`w-full p-3 rounded-lg flex items-center gap-3 text-sm font-semibold transition-all ${
-                        activeSection === 'dashboard' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-400 hover:bg-slate-800'
-                      }`}
-                    >
-                      <LayoutDashboard className="w-4 h-4" />
-                      <span>Dashboard Summary</span>
-                    </button>
-                  )}
-                  {(currentUserProfile?.menuAccess?.showHistory ?? true) && (
-                    <button
-                      onClick={() => { setActiveSection('history'); setMobileMenuOpen(false); }}
-                      className={`w-full p-3 rounded-lg flex items-center gap-3 text-sm font-semibold transition-all ${
-                        activeSection === 'history' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-400 hover:bg-slate-800'
-                      }`}
-                    >
-                      <Receipt className="w-4 h-4" />
-                      <span>Transaction List</span>
-                    </button>
-                  )}
-                  {(currentUserProfile?.menuAccess?.showHomeUser ?? true) && (
-                    <button
-                      onClick={() => { setActiveSection('home_user'); setMobileMenuOpen(false); }}
-                      className={`w-full p-3 rounded-lg flex items-center gap-3 text-sm font-semibold transition-all ${
-                        activeSection === 'home_user' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-400 hover:bg-slate-800'
-                      }`}
-                    >
-                      <Users className="w-4 h-4 text-yellow-400" />
-                      <span>Home User</span>
-                    </button>
-                  )}
-                  {(currentUserProfile?.menuAccess?.showReseller ?? true) && (
-                    <button
-                      onClick={() => { setActiveSection('reseller'); setMobileMenuOpen(false); }}
-                      className={`w-full p-3 rounded-lg flex items-center gap-3 text-sm font-semibold transition-all ${
-                        activeSection === 'reseller' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-400 hover:bg-slate-800'
-                      }`}
-                    >
-                      <Users className="w-4 h-4 text-cyan-400" />
-                      <span>Reseller</span>
-                    </button>
-                  )}
-                  {(currentUserProfile?.menuAccess?.showVoucher ?? true) && (
-                    <button
-                      onClick={() => { setActiveSection('voucher'); setMobileMenuOpen(false); }}
-                      className={`w-full p-3 rounded-lg flex items-center gap-3 text-sm font-semibold transition-all ${
-                        activeSection === 'voucher' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-400 hover:bg-slate-800'
-                      }`}
-                    >
-                      <FileText className="w-4 h-4 text-rose-400" />
-                      <span>Voucher</span>
-                    </button>
-                  )}
-                  {(currentUserProfile?.menuAccess?.showDailyClosing ?? true) && (
-                    <button
-                      onClick={() => { setActiveSection('daily_closing'); setMobileMenuOpen(false); }}
-                      className={`w-full p-3 rounded-lg flex items-center gap-3 text-sm font-semibold transition-all ${
-                        activeSection === 'daily_closing' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-400 hover:bg-slate-800'
-                      }`}
-                    >
-                      <Calculator className="w-4 h-4 text-emerald-400" />
-                      <span>Daily Closing</span>
-                    </button>
-                  )}
-
-                  {/* System Dropdown (Admin Only) */}
-                  {(!currentUserProfile || currentUserProfile.role === 'admin') && (
-                    <div className="space-y-1 pt-1 border-t border-slate-800/40">
-                      <button
-                        onClick={() => setSystemMenuOpen(!systemMenuOpen)}
-                        className="w-full p-3 rounded-lg flex items-center justify-between text-sm font-semibold text-slate-400 hover:bg-slate-800 hover:text-slate-100 transition-all cursor-pointer"
-                      >
-                        <div className="flex items-center gap-3">
-                          <Settings className="w-4 h-4 text-indigo-400 shrink-0" />
-                          <span>System</span>
-                        </div>
-                        <ChevronDown className={`w-3.5 h-3.5 text-slate-500 transition-transform duration-200 ${systemMenuOpen ? 'rotate-180' : ''}`} />
-                      </button>
-                      
-                      {systemMenuOpen && (
-                        <div className="pl-6 space-y-1">
-                          <button
-                            onClick={() => { setActiveSection('system_users'); setMobileMenuOpen(false); }}
-                            className={`w-full p-2.5 rounded-lg flex items-center gap-2.5 text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
-                              activeSection === 'system_users'
-                                ? 'bg-indigo-600 text-white shadow-sm'
-                                : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-100'
-                            }`}
-                          >
-                            <Users className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
-                            <span>App User</span>
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </nav>
-              </div>
-
-              <div className="pt-4 border-t border-slate-800 flex flex-col gap-3">
-                <div className="flex flex-col gap-1">
-                  <span className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">Logged In:</span>
-                  <span className="text-xs text-slate-300 font-mono truncate">{user.email || ''}</span>
-                </div>
-                <button
-                  onClick={safeSignOut}
-                  className="w-full text-slate-400 hover:text-white hover:bg-slate-800 p-2.5 rounded-lg flex items-center justify-center gap-2 text-xs font-semibold transition cursor-pointer border border-slate-800 mt-2"
-                >
-                  <LogOut className="w-3.5 h-3.5 text-rose-400" />
-                  <span>Sign Out</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* Content canvas with perfect margins and grids */}
-        <div className="p-4 sm:p-6 lg:p-8 space-y-6 flex-1 max-w-7xl w-full mx-auto">
+        <main className="overflow-y-auto p-10 space-y-6">
           {/* Universal high level stats counters */}
           {activeSection !== 'home_user' && activeSection !== 'reseller' && activeSection !== 'voucher' && activeSection !== 'daily_closing' && activeSection !== 'system_users' && (
             <BudgetSummary 
@@ -1099,13 +644,13 @@ export default function App() {
           {activeSection === 'system_users' && (
             <SystemUsersSection currentUserId={user.uid} />
           )}
-        </div>
+        </main>
 
         {/* Humid and clean editorial footer */}
-        <footer className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-6 mt-auto text-slate-400 text-xs border-t border-slate-200/50">
-          <p className="font-sans">© 2026 Titas Accounting Software | Secure, Offline-Ready Local Data Inventory.</p>
+        <footer className="text-center py-4 border-t border-border text-xs text-ink-dim">
+          <p>© 2026 Titas Accounting Software | Secure, Offline-Ready Local Data Inventory.</p>
         </footer>
-      </main>
+      </div>
     </div>
   );
 }
