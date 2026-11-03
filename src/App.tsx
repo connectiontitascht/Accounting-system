@@ -537,60 +537,58 @@ export default function App() {
   });
 
   return (
-    <div className="grid grid-cols-[80px,1fr] h-screen bg-bg text-ink font-geist overflow-hidden antialiased">
+    <div className="grid grid-cols-[240px,1fr] h-screen bg-bg text-ink font-inter overflow-hidden antialiased">
       {/* Nav Sidebar */}
-      <nav className="sidebar h-screen bg-surface border-r border-border flex flex-col items-center py-6 gap-8">
-        <div className="logo-box bg-accent text-black flex items-center justify-center font-bold rounded-xl mb-2">TA</div>
-        <div className="flex flex-col gap-4">
+      <aside className="sidebar h-screen bg-surface border-r border-border flex flex-col py-6 gap-8">
+        <div className="logo-container pb-10 border-b border-border mb-8">
+            <div className="flex items-center gap-3 font-syne text-2xl text-accent">TA <span style={{fontSize: '0.7rem', fontFamily: 'JetBrains Mono', color: 'var(--ink-dim)'}}>v2.0</span></div>
+        </div>
+        <nav className="flex flex-col gap-2">
             <button onClick={() => setActiveSection('dashboard')} className={`nav-item ${activeSection === 'dashboard' ? 'active' : ''}`}>
-                <LayoutDashboard className="w-6 h-6" />
+                <LayoutDashboard className="w-5 h-5" /> DASHBOARD
             </button>
             <button onClick={() => setActiveSection('history')} className={`nav-item ${activeSection === 'history' ? 'active' : ''}`}>
-                <Receipt className="w-6 h-6" />
+                <Receipt className="w-5 h-5" /> TRANSACTIONS
             </button>
             <button onClick={() => setActiveSection('home_user')} className={`nav-item ${activeSection === 'home_user' ? 'active' : ''}`}>
-                <Users className="w-6 h-6" />
+                <Users className="w-5 h-5" /> CUSTOMERS
             </button>
             <button onClick={() => setActiveSection('reseller')} className={`nav-item ${activeSection === 'reseller' ? 'active' : ''}`}>
-                <Users className="w-6 h-6" />
+                <Users className="w-5 h-5" /> RESELLERS
             </button>
             <button onClick={() => setActiveSection('daily_closing')} className={`nav-item ${activeSection === 'daily_closing' ? 'active' : ''}`}>
-                <Calculator className="w-6 h-6" />
+                <Calculator className="w-5 h-5" /> CALCULATOR
             </button>
-        </div>
+        </nav>
         <div className="mt-auto">
-            <button onClick={safeSignOut} className="nav-item text-ink-dim hover:text-rose-500 hover:bg-rose-500/5 transition">
-                <LogOut className="w-6 h-6" />
+            <button onClick={safeSignOut} className="nav-item text-[#ff4d4d] hover:bg-rose-900/10 transition">
+                <LogOut className="w-5 h-5" /> EXIT SYSTEM
             </button>
         </div>
-      </nav>
+      </aside>
 
       {/* Main Workspace */}
-      <div className="grid grid-rows-[auto,1fr,auto] h-screen overflow-hidden">
+      <div className="grid grid-rows-[80px,1fr,auto] h-screen overflow-hidden" style={{backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.02) 1px, transparent 1px)', backgroundSize: '32px 32px'}}>
         {/* Dynamic header row matching high density aesthetic */}
-        <header className="border-b border-border flex items-center justify-between px-10 h-[72px] bg-bg/80 backdrop-blur-xl">
-          <div className="flex items-center gap-4">
-            <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="lg:hidden p-2 text-accent">
-              <Menu className="w-6 h-6" />
-            </button>
-            <h2 className="font-geist font-bold text-lg">
-            {activeSection === 'dashboard' && 'Dashboard'}
-            {activeSection === 'history' && 'Transactions'}
-            {activeSection === 'home_user' && 'Home User'}
-            {activeSection === 'reseller' && 'Reseller'}
-            {activeSection === 'daily_closing' && 'Daily Closing'}
-            {activeSection === 'system_users' && 'System Users'}
+        <header className="border-b border-border flex items-center justify-between px-10 bg-[rgba(17,17,19,0.8)] backdrop-blur-xl">
+          <div>
+            <div className="text-[0.65rem] font-mono uppercase tracking-[0.15em] text-accent mb-1">System Node: Local</div>
+            <h2 className="font-syne text-2xl tracking-tight">
+            {activeSection === 'dashboard' && 'DASHBOARD OVERVIEW'}
+            {activeSection === 'history' && 'TRANSACTION HISTORY'}
+            {activeSection === 'home_user' && 'CUSTOMER PORTAL'}
+            {activeSection === 'reseller' && 'RESELLER PORTAL'}
+            {activeSection === 'daily_closing' && 'CALCULATOR ENGINE'}
+            {activeSection === 'system_users' && 'SYSTEM USERS'}
           </h2>
           </div>
-          <div className="input-group">
-            <input type="date" defaultValue={new Date().toISOString().split('T')[0]} className="p-2 border border-border bg-surface font-mono text-sm rounded-lg" />
-          </div>
+          <input type="date" defaultValue={new Date().toISOString().split('T')[0]} className="bg-surface border border-border text-ink font-mono p-2 text-xs rounded" />
         </header>
 
         {/* Content canvas with perfect margins and grids */}
         <main className="overflow-y-auto p-10 space-y-6">
           {/* Universal high level stats counters */}
-          {activeSection !== 'home_user' && activeSection !== 'reseller' && activeSection !== 'voucher' && activeSection !== 'daily_closing' && activeSection !== 'system_users' && (
+          {activeSection === 'dashboard' && (
             <BudgetSummary 
               transactions={approvedOrStandardTransactions} 
               resellers={resellers} 
@@ -611,7 +609,7 @@ export default function App() {
 
           {/* Section 2: Unified list table views with floating entry point */}
           {activeSection === 'history' && (
-            <div className="w-full animate-fade-in">
+            <div className="w-full animate-fade-in panel">
               <TransactionList 
                 transactions={approvedOrStandardTransactions} 
                 onDeleteTransaction={handleDeleteTransaction} 
@@ -622,33 +620,46 @@ export default function App() {
 
           {/* Section 5: Home user subscriber list portal */}
           {activeSection === 'home_user' && (
-            <HomeUserSection userId={user.uid} onAddTransaction={handleAddTransaction} transactions={transactions} currentUserProfile={currentUserProfile} />
+            <div className="panel">
+                <HomeUserSection userId={user.uid} onAddTransaction={handleAddTransaction} transactions={transactions} currentUserProfile={currentUserProfile} />
+            </div>
           )}
 
           {/* Section 5 Duplicate: Reseller subscriber list portal */}
           {activeSection === 'reseller' && (
-            <ResellerSection userId={user.uid} onAddTransaction={handleAddTransaction} transactions={transactions} currentUserProfile={currentUserProfile} />
+            <div className="panel">
+                <ResellerSection userId={user.uid} onAddTransaction={handleAddTransaction} transactions={transactions} currentUserProfile={currentUserProfile} />
+            </div>
           )}
 
           {/* Section 6: Voucher expense requests list and workflow */}
           {activeSection === 'voucher' && (
-            <VoucherSection userId={user.uid} onAddTransaction={handleAddTransaction} currentUserProfile={currentUserProfile} />
+            <div className="panel">
+                <VoucherSection userId={user.uid} onAddTransaction={handleAddTransaction} currentUserProfile={currentUserProfile} />
+            </div>
           )}
 
           {/* Section 7: Daily closing audit and locked states */}
           {activeSection === 'daily_closing' && (
-            <DailyClosingSection userId={user.uid} transactions={transactions} currentUserProfile={currentUserProfile} />
+            <div className="panel">
+                <DailyClosingSection userId={user.uid} transactions={transactions} currentUserProfile={currentUserProfile} />
+            </div>
           )}
 
           {/* Section 8: System Users & RBAC Administrative dashboard */}
           {activeSection === 'system_users' && (
-            <SystemUsersSection currentUserId={user.uid} />
+            <div className="panel">
+                <SystemUsersSection currentUserId={user.uid} />
+            </div>
           )}
         </main>
 
         {/* Humid and clean editorial footer */}
-        <footer className="text-center py-4 border-t border-border text-xs text-ink-dim">
-          <p>© 2026 Titas Accounting Software | Secure, Offline-Ready Local Data Inventory.</p>
+        <footer className="px-10 py-5 font-mono text-[0.6rem] text-ink-dim uppercase tracking-[0.1em] border-t border-border">
+          <div className="flex justify-between">
+            <span>© 2026 Titas Accounting Software</span>
+            <span>Security Level: High | Mode: Offline-Ready</span>
+          </div>
         </footer>
       </div>
     </div>

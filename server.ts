@@ -10,22 +10,14 @@ async function startServer() {
     res.json({ status: "ok" });
   });
 
-  // Vite middleware in development, static files in production
-  if (process.env.NODE_ENV !== 'production') {
-    const vite = await (await import('vite')).createServer({
-      server: { middlewareMode: true },
-      appType: 'spa',
-    });
-    app.use(vite.middlewares);
-  } else {
-    // Serve static files from dist
-    const distPath = path.resolve(__dirname, 'dist');
-    app.use(express.static(distPath));
-    
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
-    });
-  }
+  // Serve static files from dist
+  const distPath = path.resolve(process.cwd(), 'dist');
+  app.use(express.static(distPath));
+  
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(distPath, 'index.html'));
+  });
+
 
   app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server running on http://localhost:${PORT}`);

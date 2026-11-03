@@ -112,22 +112,22 @@ export function BudgetSummary({ transactions, resellers = [], allTransactions = 
   }, [allTransactions, runningMonthStr]);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
       {/* Total Income Card */}
-      <div className="bg-surface rounded-2xl p-5 shadow-sm border border-border transition-shadow duration-300 relative overflow-hidden group">
+      <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 hover:shadow transition-all duration-300 relative overflow-hidden group">
         <div className="flex justify-between items-start relative z-10 h-full flex-col">
           <div className="w-full flex justify-between items-center mb-3">
-            <p className="text-ink-dim text-xs font-bold uppercase tracking-wider">Total Income</p>
-            <div className="p-2 bg-accent/10 rounded-lg text-accent">
-              <TrendingUp className="w-4 h-4" />
+            <p className="text-slate-500 text-[10px] font-bold uppercase tracking-wider">Total Income</p>
+            <div className="p-1.5 bg-emerald-50 rounded-lg text-emerald-600">
+              <TrendingUp className="w-3.5 h-3.5" />
             </div>
           </div>
           <div>
-            <h3 className="text-xl font-black text-accent font-mono tracking-tight">
+            <h3 className="text-lg font-black text-emerald-600 font-mono tracking-tight">
               {formatAmount(totalIncome)}
             </h3>
-            <p className="text-[10px] text-ink-dim mt-1 flex items-center gap-1 font-semibold">
-              <span className="flex items-center gap-0.5 text-accent bg-accent/10 px-1 py-0.5 rounded font-bold font-mono">
+            <p className="text-[9px] text-slate-400 mt-0.5 flex items-center gap-1 font-semibold">
+              <span className="flex items-center gap-0.5 text-emerald-600 bg-emerald-50 px-1 py-0.5 rounded font-bold font-mono">
                 {transactions.filter(t => t.type === 'income').length}
               </span>
               TX Entries
@@ -137,20 +137,20 @@ export function BudgetSummary({ transactions, resellers = [], allTransactions = 
       </div>
 
       {/* Total Expense Card */}
-      <div className="bg-surface rounded-2xl p-5 shadow-sm border border-border transition-shadow duration-300 relative overflow-hidden group">
+      <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 hover:shadow transition-all duration-300 relative overflow-hidden group">
         <div className="flex justify-between items-start relative z-10 h-full flex-col">
           <div className="w-full flex justify-between items-center mb-3">
-            <p className="text-ink-dim text-xs font-bold uppercase tracking-wider">Total Expense</p>
-            <div className="p-2 bg-rose-500/10 rounded-lg text-rose-500">
-              <TrendingDown className="w-4 h-4" />
+            <p className="text-slate-500 text-[10px] font-bold uppercase tracking-wider">Total Expense</p>
+            <div className="p-1.5 bg-rose-50 rounded-lg text-rose-600">
+              <TrendingDown className="w-3.5 h-3.5" />
             </div>
           </div>
           <div>
-            <h3 className="text-xl font-black text-rose-500 font-mono tracking-tight">
+            <h3 className="text-lg font-black text-rose-600 font-mono tracking-tight">
               {formatAmount(totalExpense)}
             </h3>
-            <p className="text-[10px] text-ink-dim mt-1 flex items-center gap-1 font-semibold">
-              <span className="flex items-center gap-0.5 text-rose-500 bg-rose-500/10 px-1 py-0.5 rounded font-bold font-mono">
+            <p className="text-[9px] text-slate-400 mt-0.5 flex items-center gap-1 font-semibold">
+              <span className="flex items-center gap-0.5 text-rose-600 bg-rose-50 px-1 py-0.5 rounded font-bold font-mono">
                 {transactions.filter(t => t.type === 'expense').length}
               </span>
               TX Entries
@@ -160,25 +160,25 @@ export function BudgetSummary({ transactions, resellers = [], allTransactions = 
       </div>
 
       {/* Net Balance Card */}
-      <div className="bg-surface rounded-2xl p-5 shadow-sm border border-border transition-shadow duration-300 relative overflow-hidden group">
+      <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 hover:shadow transition-all duration-300 relative overflow-hidden group">
         <div className="flex justify-between items-start relative z-10 h-full flex-col">
           <div className="w-full flex justify-between items-center mb-3">
-            <p className="text-ink-dim text-xs font-bold uppercase tracking-wider">Net Balance</p>
-            <div className={`p-2 rounded-lg ${isPositive ? 'bg-accent/10 text-accent' : 'bg-rose-500/10 text-rose-500'}`}>
-              <Wallet className="w-4 h-4" />
+            <p className="text-slate-500 text-[10px] font-bold uppercase tracking-wider">Net Balance</p>
+            <div className={`p-1.5 rounded-lg ${isPositive ? 'bg-blue-50 text-blue-600' : 'bg-rose-50 text-rose-700'}`}>
+              <Wallet className="w-3.5 h-3.5" />
             </div>
           </div>
           <div>
-            <h3 className={`text-xl font-black font-mono tracking-tight ${isPositive ? 'text-accent' : 'text-rose-500'}`}>
+            <h3 className={`text-lg font-black font-mono tracking-tight ${isPositive ? 'text-blue-600' : 'text-rose-700'}`}>
               {formatAmount(netBalance)}
             </h3>
             <div className="mt-1">
-              <div className="flex justify-between items-center text-[9px] mb-0.5 font-bold text-ink-dim">
+              <p className="text-[9px] mb-0.5 font-bold text-slate-400">
                 <span>Usage: {expensePercentage}%</span>
-              </div>
-              <div className="w-full h-1 bg-border rounded-full overflow-hidden">
+              </p>
+              <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden">
                 <div 
-                  className={`h-full rounded-full transition-all duration-500 ${expensePercentage > 85 ? 'bg-amber-500' : 'bg-accent'}`}
+                  className={`h-full rounded-full transition-all duration-500 ${expensePercentage > 85 ? 'bg-amber-500' : 'bg-blue-500'}`}
                   style={{ width: `${expensePercentage}%` }}
                 ></div>
               </div>
@@ -188,22 +188,22 @@ export function BudgetSummary({ transactions, resellers = [], allTransactions = 
       </div>
 
       {/* Home Subscribers Card */}
-      <div className="bg-surface rounded-2xl p-5 shadow-sm border border-border transition-shadow duration-300 relative overflow-hidden group">
+      <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 hover:shadow transition-all duration-300 relative overflow-hidden group">
         <div className="flex justify-between items-start relative z-10 h-full flex-col">
           <div className="w-full flex justify-between items-center mb-3">
-            <p className="text-ink-dim text-xs font-bold uppercase tracking-wider">Home Subscribers</p>
-            <div className="p-2 bg-accent/10 rounded-lg text-accent">
-              <Users className="w-4 h-4" />
+            <p className="text-slate-500 text-[10px] font-bold uppercase tracking-wider">Home Subscribers</p>
+            <div className="p-1.5 bg-amber-50 rounded-lg text-amber-600">
+              <Users className="w-3.5 h-3.5" />
             </div>
           </div>
           <div>
-            <h3 className="text-xl font-black text-accent font-mono tracking-tight">
-              {uniqueHomeUsers} <span className="text-xs font-bold text-ink-dim font-geist">Clients</span>
+            <h3 className="text-lg font-black text-amber-600 font-mono tracking-tight">
+              {uniqueHomeUsers} <span className="text-[10px] font-bold text-slate-500 font-sans">Clients</span>
             </h3>
-            <div className="mt-1.5 space-y-0.5">
-              <p className="text-[10px] text-ink-dim flex justify-between items-center font-semibold">
+            <div className="mt-1 space-y-0.5">
+              <p className="text-[9px] text-slate-500 flex justify-between items-center font-semibold">
                 <span>Month Collection:</span>
-                <span className="font-bold text-accent font-mono">৳ {homeUserCollectedThisMonth.toLocaleString()}</span>
+                <span className="font-bold text-emerald-600 font-mono">৳ {homeUserCollectedThisMonth.toLocaleString()}</span>
               </p>
             </div>
           </div>
@@ -211,24 +211,24 @@ export function BudgetSummary({ transactions, resellers = [], allTransactions = 
       </div>
 
       {/* Zone Resellers Card */}
-      <div className="bg-surface rounded-2xl p-5 shadow-sm border border-border transition-shadow duration-300 relative overflow-hidden group">
+      <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 hover:shadow transition-all duration-300 relative overflow-hidden group">
         <div className="flex justify-between items-start relative z-10 h-full flex-col">
           <div className="w-full flex justify-between items-center mb-3">
-            <p className="text-ink-dim text-xs font-bold uppercase tracking-wider">Zone Resellers</p>
-            <div className="p-2 bg-accent/10 rounded-lg text-accent">
-              <Globe className="w-4 h-4" />
+            <p className="text-slate-500 text-[10px] font-bold uppercase tracking-wider">Zone Resellers</p>
+            <div className="p-1.5 bg-cyan-50 rounded-lg text-cyan-600">
+              <Globe className="w-3.5 h-3.5" />
             </div>
           </div>
           <div>
-            <h3 className="text-xl font-black text-accent font-mono tracking-tight">
-              {totalResellers} <span className="text-xs font-bold text-ink-dim font-geist">Resellers</span>
+            <h3 className="text-lg font-black text-cyan-600 font-mono tracking-tight">
+              {totalResellers} <span className="text-[10px] font-bold text-slate-500 font-sans">Resellers</span>
             </h3>
-            <div className="mt-1.5 space-y-0.5">
-              <p className="text-[10px] text-ink-dim flex justify-between items-center font-semibold gap-3">
+            <div className="mt-1 space-y-0.5">
+              <p className="text-[9px] text-slate-500 flex justify-between items-center font-semibold gap-3">
                 <span>Month Collection:</span>
-                <span className="font-bold text-accent font-mono">৳ {resellerCollectedThisMonth.toLocaleString()}</span>
+                <span className="font-bold text-emerald-600 font-mono">৳ {resellerCollectedThisMonth.toLocaleString()}</span>
               </p>
-              <p className="text-[10px] text-ink-dim flex justify-between items-center font-semibold gap-3">
+              <p className="text-[9px] text-slate-400 flex justify-between items-center font-semibold gap-3">
                 <span>Total Due:</span>
                 <span className="font-bold text-rose-500 font-mono">৳ {totalResellersDue.toLocaleString()}</span>
               </p>
